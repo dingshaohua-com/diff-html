@@ -1,0 +1,12 @@
+{
+  "name": "diff-html",
+  "version": "1.0.0",
+  "main": "src/diff.js",
+  "scripts": {
+    "preview": "http-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
