@@ -42,17 +42,15 @@
         const diffContentEl = document.querySelector(".diffContent");
         // 如果支持worker，开启一个新进程进行对比，这样可以避免阻塞主线程（页面卡顿）,否则就同步
         const hasWork = typeof Worker !== "undefined";
-        // if (hasWork) {
-        //   const worker = new Worker("./diff.js", { type: 'module' });
-        //   worker.postMessage({ newContent, oldContent });
-        //   worker.onmessage = (evt) => diffContentEl.innerHTML = evt.data.content;;
-        // } else {
-            // getHTMLDiff
-          const diff = await import("./diff.js");
-          console.log(111, diff);
-          
-        //   diffContentEl.innerHTML = getHTMLDiff(oldContent, newContent).content;
-        // }
+        if (hasWork) {
+          const worker = new Worker("./diff.js", { type: "module" });
+          worker.postMessage({ newContent, oldContent });
+          worker.onmessage = (evt) =>
+            (diffContentEl.innerHTML = evt.data.content);
+        } else {
+          const { default: getHTMLDiff } = await import("./diff.js");
+          diffContentEl.innerHTML = getHTMLDiff(oldContent, newContent).content;
+        }
       };
     </script>
   </body>
